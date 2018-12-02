@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+
+\title{Seminarski rad iz Projektovanja baza podataka \\ Autobuska stanica}
+\author{Tatjana Radovanovi\'c 1103/2018}
+
+\begin {document}
+
+\maketitle 
+
+\newpage
+
+\section{Opis domena}
+Baza podataka za potrebe medjugradskog saobra\'caja. 
+
+\subsection{Nezavisni entiteti}
+\begin{itemize}
+	\item Autobuska\_stanica
+	\item Prevoznik
+	\item Vozac
+	\item Polazak
+	\item Rezervacija
+\end{itemize}
+
+\subsection{Zavisni entiteti}
+\begin{itemize}
+	\item Peron (Zavisi od stanice)
+	\item Vozilo (Zavisi od prevoznika)
+	\item Popust (Zavisi od prevoznika)
+\end{itemize}
+
+\subsection{Agregirani entiteti}
+\begin{itemize}
+	\item Vozi
+	\item Polazi\_sa\_stanice
+\end{itemize}
+
+\subsection{Rekurzivni odnos}
+\begin{itemize}
+	\item Cena
+\end{itemize}
+
+\subsection{Specijalizacija-generalizacija}
+\begin{itemize}
+	\item Povratna\_karta (Popust)
+	\item Ostali\_popusti (Popust)
+	\item Karta (Rezervacija)
+	\item Mesto (Rezervacija)
+\end{itemize}
+
+\subsection{Trigeri}
+\begin{itemize}
+	\item Triger koji ra\v cuna cenu karte
+	\item Triger koji ra\v cuna cenu karte sa popustom
+	\item Triger koji ra\v cuna cenu mesta
+	\item Triger koji u tabeli Polazi\_sa\_stanice smanjeje broj\_slobodnih\_mesta za jedan kada neko rezervi\v se kartu ili mesto
+	\item Triger koji u tabeli Polazi\_sa\_stanice postavlja broj\_slobodnih\_mesta na broj\_mesta koje ima Vozilo
+\end{itemize}
+
+\end{document}
