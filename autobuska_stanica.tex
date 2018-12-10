@@ -10,15 +10,15 @@
 \newpage
 
 \section{Opis domena}
-Baza podataka za potrebe medjugradskog saobra\'caja. U bazi \v cuvamo informacije o autobuskim stanicama (id, naziv, mesto u kome se stanica nalazi i broj telefona). Jedna stanica ima bar jedan peron. Pored identifikatora stanice na kojoj se nalazi, peron ima i svoj broj i podatak da li je trenutno slobodan ili ne. Vozila i voza\v ce obezbedjuje prevoznik. Od podataka za prevoznika se \v cuva identifikator, naziv, broj telefona i e-mail. Za jednog prevoznika radi bar jedan voza\v c, a voza\v c moze raditi za samo jednog prevoznika. Od podataka za voza\v ca imamo mati\v cni broj, ime, prezime i broj telefona. Prevoznik poseduje bar jedno vozilo. Za vozilo pamtimo podatke o tome kom prevozniku pripada (id prevoznika), njegov id, broj raspolo\v zivih mesta i tip vozila. Jedno vozilo vozi jedan voza\v c, i jedan voza\v c vozi najvi\v se jedno vozilo. U odredjenom terminu sa jedne stanice, ukoliko je to potrebno, mo\v ze krenuti vi\v se vozila istog prevoznika, ali sa razli\v citih perona. Putnik ima mogu\'cnost da pre dolaska na stanicu uzme rezervaciju za odredjeni polazak. Rezervacija ima svoj id, i podatak da li je preuzeta ili ne, id odredi\v sne stanice. Moze se rezervisati karta ili mesto u autobusu. Mesto se rezervi\v se u slu\v caju da putnik ima povratnu kartu, a od atributa imamo cenu mesta. Za kartu pamtimo broj karte, informaciju da li je karta povratna ili ne, cenu karte, vrstu popusta koju putnik ostvaruje i cenu karte sa popustom. Prilikom kupovine karte ili mesta, atribut preuzeta se postavlja na "true" (nebitno da li je karta prethodno rezervisana ili ne). Popuste odredjuje svaki prevoznik posebno. Pamti se id popusta i iznos u procentima. Popust moze biti na povratnu kartu, gde pamtimo broj dana koliko karta vazi, ili popust po nekom drugom osnovu gde pamtimo naziv popusta. U bazi \v cuvamo i informacije o tome kolika je cena karte izmedju dve stanice za odredjenog prevoznika (pored identifikatora prevoznika, po\v cetne i krajnje stanice \v cuvamo podatke i o ceni karte i ceni mesta). 
-Svaki polazak ima svoj id i datum polaska.
+Baza podataka za potrebe medjugradskog saobra\'caja. U bazi \v cuvamo informacije o autobuskim stanicama (id, naziv, mesto u kome se stanica nalazi i broj telefona). Jedna stanica ima bar jedan peron. Pored identifikatora stanice na kojoj se nalazi, peron ima i svoj broj i podatak da li je trenutno slobodan ili ne. Vozila i voza\v ce obezbedjuje prevoznik. Od podataka za prevoznika se \v cuva identifikator, naziv, broj telefona i e-mail. Za jednog prevoznika radi bar jedan voza\v c, a voza\v c moze raditi za samo jednog prevoznika. Od podataka za voza\v ca imamo mati\v cni broj, ime, prezime i broj telefona. Prevoznik poseduje bar jedno vozilo. Za vozilo pamtimo podatke o tome kom prevozniku pripada (id prevoznika), njegov id, broj raspolo\v zivih mesta i tip vozila. Jedno vozilo vozi jedan voza\v c, i jedan voza\v c vozi najvi\v se jedno vozilo. U odredjenom terminu sa jedne stanice, ukoliko je to potrebno, mo\v ze krenuti vi\v se vozila istog prevoznika, ali sa razli\v citih perona. Putnik ima mogu\'cnost da pre dolaska na stanicu uzme rezervaciju za odredjeni polazak. Rezervacija ima svoj id, i podatak da li je preuzeta ili ne, id odredi\v sne stanice, cenu i broj rezervisanog mesta. Moze se rezervisati karta ili mesto u autobusu. Za kartu pamtimo broj karte, informaciju da li je karta povratna ili ne, cenu karte, vrstu popusta koju putnik ostvaruje i cenu karte sa popustom. Prilikom kupovine karte ili mesta, atribut preuzeta se postavlja na "true" (nebitno da li je karta prethodno rezervisana ili ne). Popuste odredjuje svaki prevoznik posebno. Pamti se id popusta i iznos u procentima. Popust moze biti na povratnu kartu, gde pamtimo broj dana koliko karta va\v zi, ili popust po nekom drugom osnovu gde pamtimo naziv popusta. U bazi \v cuvamo i informacije o tome kolika je cena karte izmedju dve stanice za odredjenog prevoznika (pored identifikatora prevoznika, po\v cetne i krajnje stanice \v cuvamo podatke i o ceni karte i ceni mesta). 
+Svaka ruta ima svoj id i datum polaska.
 
 \subsection{Nezavisni entiteti}
 \begin{itemize}
 	\item Autobuska\_stanica
 	\item Prevoznik
 	\item Vozac
-	\item Polazak
+	\item Ruta
 	\item Rezervacija
 \end{itemize}
 
@@ -32,7 +32,7 @@ Svaki polazak ima svoj id i datum polaska.
 \subsection{Agregirani entiteti}
 \begin{itemize}
 	\item Vozi
-	\item Polazi\_sa\_stanice
+	\item Polazi\_sa\_medjustanice
 \end{itemize}
 
 \subsection{Rekurzivni odnos}
@@ -45,7 +45,6 @@ Svaki polazak ima svoj id i datum polaska.
 	\item Povratna\_karta (Popust)
 	\item Ostali\_popusti (Popust)
 	\item Karta (Rezervacija)
-	\item Mesto (Rezervacija)
 \end{itemize}
 
 \subsection{Trigeri}
