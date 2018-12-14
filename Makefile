@@ -1,25 +1,19 @@
-DIR	= mysql-C
-PROGS	= app
-CFLAGS	= -g -Wall `mysql_config --cflags --libs`
-
-.PHONY: all create insert beauty dist progs
-
-progs: $(PROGS)
-
-all: create insert $(PROGS)
-
-create:
-	mysql -u root -proot -D mysql <create.sql
-
-insert:
-	mysql -u root -proot -D mysql <insert.sql
+CC	= gcc
+CCLIBS	= -I/usr/include/mysql/ -lmysqlclient
+CCFLAGS = -Wall -Wextra
+PROGRAM	= app
+OBJ	= app.o
 	
-beauty:
-	-indent $(PROGS).c
+
+%.o: %.c
+	$(CC) -c -o $@ $< $(CCLIBS) $(CCFLAGS)
+
+
+$(PROGRAM): $(OBJ)
+	$(CC) -o $@ $^ $(CCLIBS) $(CCFLAGS)
+
+
+.PHONY: clean
 
 clean:
-	-rm -f *~ $(PROGS)
-	
-dist: beauty clean
-	-tar -czv -C .. -f ../$(DIR).tar.gz $(DIR)
-	
+	rm -f src/*.swp *.swp *~ src/*~ *.o
