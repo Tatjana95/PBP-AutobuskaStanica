@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `autobuska_stanica`.`Ruta` ;
 
 CREATE TABLE IF NOT EXISTS `autobuska_stanica`.`Ruta` (
   `id` INT NOT NULL,
-  `datum_polaska` DATE NOT NULL,
+  `dan_polaska` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -59,8 +59,8 @@ DROP TABLE IF EXISTS `autobuska_stanica`.`Prevoznik` ;
 CREATE TABLE IF NOT EXISTS `autobuska_stanica`.`Prevoznik` (
   `id` INT NOT NULL,
   `naziv` VARCHAR(45) NOT NULL,
-  `e_mail` VARCHAR(45) NOT NULL,
-  `broj_telefona` VARCHAR(45) NOT NULL,
+  `e_mail` VARCHAR(45) NULL,
+  `broj_telefona` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -136,7 +136,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `autobuska_stanica`.`Polazi_sa_medjustanice` ;
 
 CREATE TABLE IF NOT EXISTS `autobuska_stanica`.`Polazi_sa_medjustanice` (
-  `datum` DATE NOT NULL,
+  `dan` VARCHAR(10) NOT NULL,
   `vreme_dolaska_na_peron` TIME NOT NULL,
   `vreme_polaska_sa_perona` TIME NULL,
   `broj_slobodnih_mesta` INT NOT NULL,
@@ -304,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `autobuska_stanica`.`Cena` (
     REFERENCES `autobuska_stanica`.`Prevoznik` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  UNIQUE(`autobuska_stanica_id1`, `autobuska_stanica_id2`))
+  UNIQUE(`autobuska_stanica_id1`, `autobuska_stanica_id2`, `prevoznik_id`))
 ENGINE = InnoDB;
 
 
