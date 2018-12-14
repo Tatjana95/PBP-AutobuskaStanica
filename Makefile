@@ -11,7 +11,7 @@ OBJ	= app.o
 
 $(PROGRAM): $(OBJ)
 	$(CC) -o $@ $^ $(CCLIBS) $(CCFLAGS)
-
+	cat create.sql triggers.sql insert.sql | mysql -u "root" -p
 
 .PHONY: clean
 
