@@ -32,7 +32,8 @@ begin
 	if(new.povratna = true)
 	then
 		set povratna = (select popust_id from Povratna_karta where prevoznik_id = prevoznik);
-		set new.cena_sa_popustom = new.cena + new.cena* (select iznos_u_procentima from Popust where id = povratna and prevoznik_id = prevoznik)/100.0;
+		set new.cena_sa_popustom = new.cena + new.cena* (1-(select iznos_u_procentima from Popust where id = povratna and prevoznik_id = prevoznik)/100.0);
+		set new.cena = new.cena * 2;
 	else
 		set new.cena_sa_popustom = new.cena;	
 	end if;
@@ -40,7 +41,7 @@ begin
 	if(new.vrsta_popusta is not null)
 	then
 		set popust = (select popust_id from Ostali_popusti where prevoznik_id = prevoznik and naziv_popusta = new.vrsta_popusta);
-		set new.cena_sa_popustom = new.cena_sa_popustom * (select iznos_u_procentima from Popust where id = popust and prevoznik_id = prevoznik)/100.0;
+		set new.cena_sa_popustom = new.cena_sa_popustom * (1-(select iznos_u_procentima from Popust where id = popust and prevoznik_id = prevoznik)/100.0);
 	end if;
 	
 	begin 
