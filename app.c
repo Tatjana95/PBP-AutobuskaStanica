@@ -16,6 +16,8 @@ int main(int argc, char** argv)
 	MYSQL_RES *rezultat;
 	MYSQL_ROW red;
 	MYSQL_FIELD *polje;
+	 
+	FILE* f; //pomicni fajl za demonstriranje rada trigera
 	
 	char query[QUERY_SIZE];
 	char dan[11];
@@ -26,6 +28,8 @@ int main(int argc, char** argv)
 	char info;
 	
 	int rezer_id;
+	
+	f = fopen("rad_trigera.txt", "a");
 	
 	konekcija = mysql_init(NULL);
 
@@ -152,6 +156,25 @@ int main(int argc, char** argv)
 			printf("Unesite id_rute za polazak koji zelite\n");
 			scanf("%d", &polazak);
 			
+			
+			//Deo koda koji sluzi za demonstriranje rada trigera za unosenje u tabelu Rezervacija
+			fprintf(f, "Pre unosa u tabelu Rezervacija\n");
+			sprintf(query, "select broj_slobodnih_mesta, autobuska_stanica_id from Polazi_sa_medjustanice where ruta_id = %d order by vreme_polaska_sa_perona", polazak);
+			if(mysql_query(konekcija, query) != 0)
+			{
+				exit(EXIT_FAILURE);
+			}
+			rezultat = mysql_use_result(konekcija);
+			
+			polje = mysql_fetch_field(rezultat);
+			
+			fprintf(f, "%s\t%s\n", polje[0].name, polje[1].name);
+			while((red = mysql_fetch_row(rezultat)) != 0)			
+				fprintf(f,"%s\t\t%s\n", red[0], red[1]);
+
+			mysql_free_result(rezultat);
+			// Kraj dela koda za demonstriranje unosenja u tabelu Rezervacija
+			
 			//Pronalazi id prevoznika, vozila, i broj perona
 			sprintf(query, "select prevoznik_id, vozilo_id, broj_perona from Polazi_sa_medjustanice where ruta_id = %d and autobuska_stanica_id = %d", polazak, poc_id);
 			
@@ -172,6 +195,43 @@ int main(int argc, char** argv)
 			sprintf(query, "insert into Rezervacija values(%d, %d, %d, %d, %d, %d, %d, 0, 0, false)", rezer_id, prev, vozilo, peron, poc_id, polazak, kraj_id);
 			if(mysql_query(konekcija, query) != 0)
 				exit(EXIT_FAILURE);
+			
+			
+			//Deo koda koji sluzi za demonstriranje rada trigera za unosenje u tabelu Rezervacija
+			fprintf(f, "Nakon unosa u tabelu Rezervacija\n");
+			fprintf(f, "Tabela Polazi_sa_medjustanice\n");
+			sprintf(query, "select broj_slobodnih_mesta, autobuska_stanica_id from Polazi_sa_medjustanice where ruta_id = %d order by vreme_polaska_sa_perona", polazak);
+			if(mysql_query(konekcija, query) != 0)
+			{
+				exit(EXIT_FAILURE);
+			}
+			rezultat = mysql_use_result(konekcija);
+			
+			polje = mysql_fetch_field(rezultat);
+			
+			fprintf(f, "%s\t%s\n", polje[0].name, polje[1].name);
+			while((red = mysql_fetch_row(rezultat)) != 0)			
+				fprintf(f,"%s\t\t%s\n", red[0], red[1]);
+
+			mysql_free_result(rezultat);
+			
+			fprintf(f, "Tabela Rezervacija\n");
+			sprintf(query, "select broj_mesta, cena from Rezervacija where id = %d", rezer_id);
+			if(mysql_query(konekcija, query) != 0)
+			{
+				exit(EXIT_FAILURE);
+			}
+			rezultat = mysql_use_result(konekcija);
+			
+			polje = mysql_fetch_field(rezultat);
+			
+			fprintf(f, "%s\t%s\n", polje[0].name, polje[1].name);
+			red = mysql_fetch_row(rezultat);			
+			fprintf(f,"%s\t\t%s\n", red[0], red[1]);
+
+			mysql_free_result(rezultat);
+			// Kraj dela koda za demonstriranje unosenja u tabelu Rezervacija
+			
 		}
 		else
 			printf("Uneli ste nevalidne podatke\n");
@@ -217,6 +277,26 @@ int main(int argc, char** argv)
 			if(mysql_query(konekcija, query) != 0)
 				exit(EXIT_FAILURE);
 			
+			
+			
+			//Deo koda koji sluzi za demonstriranje rada trigera za unosenje u tabelu Karta
+			fprintf(f, "Nakon unosa u tabelu Karta\n");
+			sprintf(query, "select k.cena as cena_karte, k.cena_sa_popustom, r.cena as rezervacija_cena from Karta k join Rezervacija r on r.id = k.rezervacija_id where k.broj_karte = %d and k.rezervacija_id = %d", karta_id, rezer_id);
+			if(mysql_query(konekcija, query) != 0)
+			{
+				exit(EXIT_FAILURE);
+			}
+			rezultat = mysql_use_result(konekcija);
+			
+			polje = mysql_fetch_field(rezultat);
+			
+			fprintf(f, "%s\t%s\t%s\n", polje[0].name, polje[1].name, polje[2].name);
+			
+			red = mysql_fetch_row(rezultat);
+			fprintf(f,"%s\t\t%s\t\t%s\n", red[0], red[1], red[2]);
+			mysql_free_result(rezultat);
+			// Kraj dela koda za demonstriranje unosenja u tabelu Karta
+			
 		}
 		printf("\n\nVasa rezervacija je uspesno zabelezena\n");
 		
@@ -230,6 +310,7 @@ int main(int argc, char** argv)
 		red = mysql_fetch_row(rezultat);
 		
 		printf("\nCena Vase karte/mesta je %s, a vase sediste je %s\n", red[0], red[1]);
+		mysql_free_result(rezultat);  
 	}
 	
 	mysql_close(konekcija);
