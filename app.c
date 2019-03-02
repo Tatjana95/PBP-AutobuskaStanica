@@ -5,8 +5,8 @@
 #include <stdarg.h>
 #include <errno.h>
 
-#define QUERY_SIZE 256
-#define MAX_SIZE 45
+#define QUERY_SIZE 1024
+#define MAX_SIZE 45 
 
 int idStanice(char stanica[], char user[], char pas[]);
 
@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 		exit(EXIT_FAILURE);
 	
 	//Informacije o polascima
-	sprintf(query, "select psm.ruta_id, psm.vreme_polaska_sa_perona as vreme_polaska, broj_perona, p.naziv as prevoznik from Polazi_sa_medjustanice psm join Prevoznik p on psm.prevoznik_id = p.id where dan = \"%s\" and psm.autobuska_stanica_id = %d and psm.vreme_polaska_sa_perona is not null and exists(select * from Polazi_sa_medjustanice psm1 where psm1.ruta_id = psm.ruta_id and psm.vreme_polaska_sa_perona < psm1.vreme_dolaska_na_peron and psm1.autobuska_stanica_id = %d) order by vreme_polaska_sa_perona", dan, poc_id, kraj_id);  
+	sprintf(query, "select psm.ruta_id, psm.vreme_polaska_sa_perona as vreme_polaska, broj_perona, p.naziv as prevoznik from Polazi_sa_medjustanice psm join Prevoznik p on psm.prevoznik_id = p.id where dan = \"%s\" and psm.autobuska_stanica_id = %d and psm.vreme_polaska_sa_perona is not null and exists(select * from Polazi_sa_medjustanice psm1 where psm1.ruta_id = psm.ruta_id and psm.vreme_polaska_sa_perona < psm1.vreme_dolaska_na_peron and psm1.autobuska_stanica_id = %d) order by vreme_polaska_sa_perona", dan, poc_id, kraj_id); 
 	
 	if(mysql_query(konekcija, query) != 0)
 	{
@@ -316,6 +316,8 @@ int main(int argc, char** argv)
 	mysql_close(konekcija);
 
 	printf("Srecan put!!! :D");
+
+	fclose(f);
 	
 	exit(EXIT_SUCCESS);	
 }

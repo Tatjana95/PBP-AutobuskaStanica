@@ -283,7 +283,7 @@ DROP TABLE IF EXISTS `autobuska_stanica`.`Cena` ;
 CREATE TABLE IF NOT EXISTS `autobuska_stanica`.`Cena` (
   `autobuska_stanica_id1` INT NOT NULL,
   `autobuska_stanica_id2` INT NOT NULL,
-  `prevoznik_id` INT NULL,
+  `prevoznik_id` INT NOT NULL,
   `cena_karte` DECIMAL(7,2) NOT NULL,
   `cena_mesta` DECIMAL(7,2) NOT NULL,
   PRIMARY KEY (`autobuska_stanica_id1`, `autobuska_stanica_id2`, `prevoznik_id`),
